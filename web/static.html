@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Accident Report</title>
+    <link href="./css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/static.css" type="text/css" />
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+<div class="container">
+<div class="page-header">
+  <h3>Accident Report</h3>
+</div>
+
+<div class="row">
+
+    <div class="col-md-6">
+    <div id="cntct1Class">
+        <div class="panel-heading">Driver 1</div>
+        <div class="panel-body">
+        <div class="row">
+            <div class="col-md-6"><label for="cntct1Name">Name: </label></div>
+            <div id="cntct1NameDiv" class="col-md-6">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6"><label for="cntct1Email">Email: </label></div>
+            <div id="cntct1EmailDiv" class="col-md-6">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6"><label for="cntct1Phone">Phone: </label></div>
+            <div id="cntct1PhoneDiv" class="col-md-6">
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="col-md-6">
+    <div id="cntct2Class">
+        <div class="panel-heading">Driver 2</div>
+        <div class="panel-body">
+        <div class="row">
+            <div class="col-md-6"><label for="cntct2Name">Name: </label></div>
+            <div id="cntct2NameDiv" class="col-md-6">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6"><label for="cntct2Email">Email: </label></div>
+            <div id="cntct2EmailDiv" class="col-md-6">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6"><label for="cntct2Phone">Phone: </label></div>
+            <div id="cntct2PhoneDiv" class="col-md-6">
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-md-6">
+    <div id="scn1Class">
+        <div class="panel-heading">Vehicle 1 Description</div>
+        <div class="panel-body">
+
+            <div class="row">
+                <div class="col-md-6"><label for="scn1Vin">VIN: </label></div>
+                <div id="scn1VinDiv" class="col-md-6">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6"><label for="scn1Make">Make: </label></div>
+                <div id="scn1MakeDiv" class="col-md-6">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6"><label for="scn1Model">Model: </label></div>
+                <div id="scn1ModelDiv" class="col-md-6">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6"><label for="scn1Year">Year: </label></div>
+                <div id="scn1YearDiv" class="col-md-6">
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+
+    <div class="col-md-6">
+    <div id="scn2Class">
+        <div class="panel-heading">Vehicle 2 Description</div>
+        <div class="panel-body">
+
+            <div class="row">
+                <div class="col-md-6"><label for="scn2Vin">VIN: </label></div>
+                <div id="scn2VinDiv" class="col-md-6">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6"><label for="scn2Make">Make: </label></div>
+                <div id="scn2MakeDiv" class="col-md-6">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6"><label for="scn2Model">Model: </label></div>
+                <div id="scn2ModelDiv" class="col-md-6">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6"><label for="scn2Year">Year: </label></div>
+                <div id="scn2YearDiv" class="col-md-6">
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-md-6">
+    <div id="lctnClass">
+        <div class="panel-heading">Accident Location</div>
+        <div class="panel-body">
+            <div id="mapCanvas" style="height:200px;" ></div>
+        </div>
+    </div>
+    </div>
+
+    <div class="col-md-6">
+    <div id="rcrdngClass">
+        <div class="panel-heading">Accident Description(s)</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4"><label for="dscr">Description: </label></div>
+                <div id="dscrDiv" class="col-md-8">
+                </div>
+            </div>
+
+            <div id="rcrdngDiv">
+            </div>
+
+        </div>
+    </div>
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-md-12">
+    <div id="cmrClass">
+        <div class="panel-heading">Picture(s)</div>
+        <div id="pictureDiv" class="panel-body">
+        </div>
+    </div>
+    </div>
+
+</div>
+</div>
+    <script>
+        var req;
+        req = $.getJSON('http://api.bridgeit.mobi/echo/list/' + getParameterByName('reportId'), function(data){
+            console.log('report data: ' + JSON.stringify(data));
+            var cntct1ClassDiv = document.getElementById("cntct1Class");
+            if(data[0].contacts.cntct1Name != '' || data[0].contacts.cntct1Email != '' || data[0].contacts.cntct1Phone != ''){
+                cntct1ClassDiv.setAttribute('class','panel panel-success');
+            }else{
+                cntct1ClassDiv.setAttribute('class','panel panel-danger');
+            }
+            var cntct1NameDiv = document.getElementById("cntct1NameDiv");
+            var cntct1NameElement;
+            if(data[0].contacts.cntct1Name){
+                cntct1NameElement = document.createElement('input');
+                cntct1NameElement.setAttribute('id','cntct1Name');
+                cntct1NameElement.setAttribute('disabled','disabled');
+                cntct1NameElement.setAttribute('value',data[0].contacts.cntct1Name);
+            }else{
+                cntct1NameElement = document.createTextNode('Name not provided.');
+            }
+            cntct1NameDiv.appendChild(cntct1NameElement);
+
+            var cntct1EmailDiv = document.getElementById("cntct1EmailDiv");
+            var cntct1EmailElement;
+            if(data[0].contacts.cntct1Email){
+                cntct1EmailElement = document.createElement('input');
+                cntct1EmailElement.setAttribute('id','cntct1Email');
+                cntct1EmailElement.setAttribute('disabled','disabled');
+                cntct1EmailElement.setAttribute('value',data[0].contacts.cntct1Email);
+            }else{
+                cntct1EmailElement = document.createTextNode('Email not provided.');
+            }
+            cntct1EmailDiv.appendChild(cntct1EmailElement);
+
+            var cntct1PhoneDiv = document.getElementById("cntct1PhoneDiv");
+            var cntct1PhoneElement;
+            if(data[0].contacts.cntct1Phone){
+                cntct1PhoneElement = document.createElement('input');
+                cntct1PhoneElement.setAttribute('id','cntct1Phone');
+                cntct1PhoneElement.setAttribute('disabled','disabled');
+                cntct1PhoneElement.setAttribute('value',data[0].contacts.cntct1Phone);
+            }else{
+                cntct1PhoneElement = document.createTextNode('Phone not provided.');
+            }
+            cntct1PhoneDiv.appendChild(cntct1PhoneElement);
+
+            var cntct2ClassDiv = document.getElementById("cntct2Class");
+            if(data[0].contacts.cntct2Name != '' || data[0].contacts.cntct2Email != '' || data[0].contacts.cntct2Phone != ''){
+                cntct2ClassDiv.setAttribute('class','panel panel-success');
+            }else{
+                cntct2ClassDiv.setAttribute('class','panel panel-danger');
+            }
+            var cntct2NameDiv = document.getElementById("cntct2NameDiv");
+            var cntct2NameElement;
+            if(data[0].contacts.cntct2Name){
+                cntct2NameElement = document.createElement('input');
+                cntct2NameElement.setAttribute('id','cntct2Name');
+                cntct2NameElement.setAttribute('disabled','disabled');
+                cntct2NameElement.setAttribute('value',data[0].contacts.cntct2Name);
+            }else{
+                cntct2NameElement = document.createTextNode('Name not provided.');
+            }
+            cntct2NameDiv.appendChild(cntct2NameElement);
+
+            var cntct2EmailDiv = document.getElementById("cntct2EmailDiv");
+            var cntct2EmailElement;
+            if(data[0].contacts.cntct2Email){
+                cntct2EmailElement = document.createElement('input');
+                cntct2EmailElement.setAttribute('id','cntct2Email');
+                cntct2EmailElement.setAttribute('disabled','disabled');
+                cntct2EmailElement.setAttribute('value',data[0].contacts.cntct2Email);
+            }else{
+                cntct2EmailElement = document.createTextNode('Email not provided.');
+            }
+            cntct2EmailDiv.appendChild(cntct2EmailElement);
+
+            var cntct2PhoneDiv = document.getElementById("cntct2PhoneDiv");
+            var cntct2PhoneElement;
+            if(data[0].contacts.cntct2Phone){
+                cntct2PhoneElement = document.createElement('input');
+                cntct2PhoneElement.setAttribute('id','cntct2Phone');
+                cntct2PhoneElement.setAttribute('disabled','disabled');
+                cntct2PhoneElement.setAttribute('value',data[0].contacts.cntct2Phone);
+            }else{
+                cntct2PhoneElement = document.createTextNode('Phone not provided.');
+            }
+            cntct2PhoneDiv.appendChild(cntct2PhoneElement);
+
+            var scn1ClassDiv = document.getElementById("scn1Class");
+            if(data[0].vehicles.scn1Vin != '' || data[0].vehicles.scn1Make != '' || data[0].vehicles.scn1Model != '' || data[0].vehicles.scn1Year != ''){
+                scn1ClassDiv.setAttribute('class','panel panel-success');
+            }else{
+                scn1ClassDiv.setAttribute('class','panel panel-danger');
+            }
+            var scn1VinDiv = document.getElementById("scn1VinDiv");
+            var scn1VinElement;
+            if(data[0].vehicles.scn1Vin){
+                scn1VinElement = document.createElement('input');
+                scn1VinElement.setAttribute('id','scn1Vin');
+                scn1VinElement.setAttribute('disabled','disabled');
+                scn1VinElement.setAttribute('value',data[0].vehicles.scn1Vin);
+            }else{
+                scn1VinElement = document.createTextNode('VIN not provided.');
+            }
+            scn1VinDiv.appendChild(scn1VinElement);
+
+            var scn1MakeDiv = document.getElementById("scn1MakeDiv");
+            var scn1MakeElement;
+            if(data[0].vehicles.scn1Make){
+                scn1MakeElement = document.createElement('input');
+                scn1MakeElement.setAttribute('id','scn1Make');
+                scn1MakeElement.setAttribute('disabled','disabled');
+                scn1MakeElement.setAttribute('value',data[0].vehicles.scn1Make);
+            }else{
+                scn1MakeElement = document.createTextNode('Make not provided.');
+            }
+            scn1MakeDiv.appendChild(scn1MakeElement);
+
+            var scn1ModelDiv = document.getElementById("scn1ModelDiv");
+            var scn1ModelElement;
+            if(data[0].vehicles.scn1Model){
+                scn1ModelElement = document.createElement('input');
+                scn1ModelElement.setAttribute('id','scn1Model');
+                scn1ModelElement.setAttribute('disabled','disabled');
+                scn1ModelElement.setAttribute('value',data[0].vehicles.scn1Model);
+            }else{
+                scn1ModelElement = document.createTextNode('Model not provided.');
+            }
+            scn1ModelDiv.appendChild(scn1ModelElement);
+
+            var scn1YearDiv = document.getElementById("scn1YearDiv");
+            var scn1YearElement;
+            if(data[0].vehicles.scn1Year){
+                scn1YearElement = document.createElement('input');
+                scn1YearElement.setAttribute('id','scn1Year');
+                scn1YearElement.setAttribute('disabled','disabled');
+                scn1YearElement.setAttribute('value',data[0].vehicles.scn1Year);
+            }else{
+                scn1YearElement = document.createTextNode('Year not provided.');
+            }
+            scn1YearDiv.appendChild(scn1YearElement);
+
+            var scn2ClassDiv = document.getElementById("scn2Class");
+            if(data[0].vehicles.scn2Vin != '' || data[0].vehicles.scn2Make != '' || data[0].vehicles.scn2Model != '' || data[0].vehicles.scn2Year != ''){
+                scn2ClassDiv.setAttribute('class','panel panel-success');
+            }else{
+                scn2ClassDiv.setAttribute('class','panel panel-danger');
+            }
+            var scn2VinDiv = document.getElementById("scn2VinDiv");
+            var scn2VinElement;
+            if(data[0].vehicles.scn2Vin){
+                scn2VinElement = document.createElement('input');
+                scn2VinElement.setAttribute('id','scn2Vin');
+                scn2VinElement.setAttribute('disabled','disabled');
+                scn2VinElement.setAttribute('value',data[0].vehicles.scn2Vin);
+            }else{
+                scn2VinElement = document.createTextNode('VIN not provided.');
+            }
+            scn2VinDiv.appendChild(scn2VinElement);
+
+            var scn2MakeDiv = document.getElementById("scn2MakeDiv");
+            var scn2MakeElement;
+            if(data[0].vehicles.scn2Make){
+                scn2MakeElement = document.createElement('input');
+                scn2MakeElement.setAttribute('id','scn2Make');
+                scn2MakeElement.setAttribute('disabled','disabled');
+                scn2MakeElement.setAttribute('value',data[0].vehicles.scn2Make);
+            }else{
+                scn2MakeElement = document.createTextNode('Make not provided.');
+            }
+            scn2MakeDiv.appendChild(scn2MakeElement);
+
+            var scn2ModelDiv = document.getElementById("scn2ModelDiv");
+            var scn2ModelElement;
+            if(data[0].vehicles.scn2Model){
+                scn2ModelElement = document.createElement('input');
+                scn2ModelElement.setAttribute('id','scn2Model');
+                scn2ModelElement.setAttribute('disabled','disabled');
+                scn2ModelElement.setAttribute('value',data[0].vehicles.scn2Model);
+            }else{
+                scn2ModelElement = document.createTextNode('Model not provided.');
+            }
+            scn2ModelDiv.appendChild(scn2ModelElement);
+
+            var scn2YearDiv = document.getElementById("scn2YearDiv");
+            var scn2YearElement;
+            if(data[0].vehicles.scn2Year){
+                scn2YearElement = document.createElement('input');
+                scn2YearElement.setAttribute('id','scn2Year');
+                scn2YearElement.setAttribute('disabled','disabled');
+                scn2YearElement.setAttribute('value',data[0].vehicles.scn2Year);
+            }else{
+                scn2YearElement = document.createTextNode('Year not provided.');
+            }
+            scn2YearDiv.appendChild(scn2YearElement);
+
+            var lctnClassDiv = document.getElementById("lctnClass");
+            if(data[0].mapLocation.latitude != '' && data[0].mapLocation.longitude != ''){
+                lctnClassDiv.setAttribute('class','panel panel-success');
+            }else{
+                lctnClassDiv.setAttribute('class','panel panel-danger');
+            }
+            var mapCanvasElement = document.getElementById("mapCanvas");
+            if(data[0].mapLocation.latitude && data[0].mapLocation.longitude){
+                var mapOptions = {
+                    maxZoom: 20,
+                    zoom: 18,
+                    draggable: false,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                var map = new google.maps.Map(mapCanvasElement, mapOptions);
+                var pos = new google.maps.LatLng(data[0].mapLocation.latitude,data[0].mapLocation.longitude);
+                var locationMarker = new google.maps.Marker({
+                    map: map,
+                    position: pos,
+                    title: 'Location of Accident'
+                });
+                map.setCenter(pos);
+            }else{
+                mapCanvasElement.innerHTML = 'Location not provided.';
+            }
+
+            var rcrdngClassDiv = document.getElementById("rcrdngClass");
+            if(data[0].textDescription.description != '' || data[0].recordings.length > 0){
+                rcrdngClassDiv.setAttribute('class','panel panel-success');
+            }else{
+                rcrdngClassDiv.setAttribute('class','panel panel-danger');
+            }
+            var dscrDiv = document.getElementById("dscrDiv");
+            var dscrElement;
+            if(data[0].textDescription.description){
+                dscrElement = document.createElement('textarea');
+                dscrElement.setAttribute('id','dscr');
+                dscrElement.setAttribute('disabled','disabled');
+                dscrElement.innerHTML = data[0].textDescription.description;
+            }else{
+                dscrElement = document.createTextNode('Text description not provided.');
+            }
+            dscrDiv.appendChild(dscrElement);
+
+            var rcrdngDiv = document.getElementById("rcrdngDiv");
+            if(data[0].recordings.length > 0){
+                for(var i=0; i < data[0].recordings.length; i++){
+                    var row1Element = document.createElement('div');
+                    row1Element.setAttribute('class','row');
+                    var row1Child = document.createElement('div');
+                    row1Child.setAttribute('class','col-md-6');
+                    var audioLabel= document.createElement('label');
+                    audioLabel.setAttribute('for','audio' + (i + 1));
+                    audioLabel.innerHTML = 'Audio Recording ' + (i + 1);
+                    row1Child.appendChild(audioLabel);
+                    row1Element.appendChild(row1Child);
+                    rcrdngDiv.appendChild(row1Element);
+
+                    var row2Element = document.createElement('div');
+                    row2Element.setAttribute('class','row');
+                    var audioElement = document.createElement('audio');
+                    audioElement.setAttribute('src', data[0].recordings[i]);
+                    audioElement.setAttribute('id','audio' + (i + 1));
+                    audioElement.setAttribute('controls', 'controls');
+                    audioElement.setAttribute('preload', 'auto');
+                    audioElement.setAttribute('type', 'audio/mp3');
+                    audioElement.innerHTML = 'Your browser does not support the audio element.';
+                    row2Element.appendChild(audioElement);
+                    rcrdngDiv.appendChild(row2Element);
+                }
+            }else{
+                var emptyElement = document.createElement('div');
+                emptyElement.setAttribute('class','row');
+                var emptyChild = document.createElement('div');
+                emptyChild.setAttribute('class','col-md-12');
+                emptyChild.innerHTML = 'Audio description(s) not provided.';
+                emptyElement.appendChild(emptyChild);
+                rcrdngDiv.appendChild(emptyElement);
+            }
+
+            var cmrClassDiv = document.getElementById("cmrClass");
+            if(data[0].photos.length > 0){
+                cmrClassDiv.setAttribute('class','panel panel-success');
+            }else{
+                cmrClassDiv.setAttribute('class','panel panel-danger');
+            }
+            var pictureDiv = document.getElementById("pictureDiv");
+            var carouselElement;
+            if(data[0].photos.length > 0){
+                carouselElement = document.createElement('div');
+                carouselElement.setAttribute('id','carousel');
+                carouselElement.setAttribute('class','carousel slide');
+                carouselElement.setAttribute('data-ride','carousel');
+
+                var olElement = document.createElement('ol');
+                olElement.setAttribute('class','carousel-indicators');
+                for(var k=0; k < data[0].photos.length; k++){
+                    var liElement = document.createElement('li');
+                    liElement.setAttribute('data-target','#carousel');
+                    liElement.setAttribute('data-slide-to',k);
+                    if(k == 0){
+                        liElement.setAttribute('class','active');
+                    }
+                    olElement.appendChild(liElement);
+                }
+                carouselElement.appendChild(olElement);
+
+                var slideWrapperElement = document.createElement('div');
+                slideWrapperElement.setAttribute('class','carousel-inner');
+                for(var j=0; j < data[0].photos.length; j++){
+                    var imgDiv = document.createElement('div');
+                    if(j == 0){
+                        imgDiv.setAttribute('class','item active');
+                    }else{
+                        imgDiv.setAttribute('class','item');
+                    }
+                    var img = document.createElement('img');
+                    img.setAttribute('src',data[0].photos[j]);
+                    img.setAttribute('alt','Picture ' + (j+1));
+                    imgDiv.appendChild(img);
+                    slideWrapperElement.appendChild(imgDiv);
+                }
+                carouselElement.appendChild(slideWrapperElement);
+
+                var controlElement1 = document.createElement('a');
+                controlElement1.setAttribute('class','left carousel-control');
+                controlElement1.setAttribute('href','#carousel');
+                controlElement1.setAttribute('data-slide','prev');
+                var controlSpan1 = document.createElement('span');
+                controlSpan1.setAttribute('class','glyphicon glyphicon-chevron-left');
+                controlElement1.appendChild(controlSpan1);
+                carouselElement.appendChild(controlElement1);
+
+                var controlElement2 = document.createElement('a');
+                controlElement2.setAttribute('class','right carousel-control');
+                controlElement2.setAttribute('href','#carousel');
+                controlElement2.setAttribute('data-slide','next');
+                var controlSpan2 = document.createElement('span');
+                controlSpan2.setAttribute('class','glyphicon glyphicon-chevron-right');
+                controlElement2.appendChild(controlSpan2);
+                carouselElement.appendChild(controlElement2);
+            }else{
+                carouselElement = document.createTextNode('Picture(s) not provided.');
+            }
+            pictureDiv.appendChild(carouselElement);
+        })
+        .always(always);
+
+        function always(){
+            console.log(JSON.stringify(req));
+            if( req.status == 200 ){
+                $('#carousel').carousel();
+            }
+            else{
+                alert("Sorry, there was an error retrieving the page, please try again later.");
+            }
+        }
+
+        function getParameterByName(name) {
+            var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+            return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+        }
+    </script>
+    <script src="./javascript/bootstrap.js"></script>
+</body>
+</html>
