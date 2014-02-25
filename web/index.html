@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+     <title>Accident Report</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+     <link rel="icon" type="image/png" href="favicon.png"/>
+     <meta name="apple-mobile-web-app-capable" content="yes" />
+
+     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+     <link rel="stylesheet" href="css/mobile.css" type="text/css" />
+
+     <script src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
+     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+     <script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+
+     <!-- bridgeit.js UNSTABLE VERSION -->
+     <script src="http://bridgeit.github.io/bridgeit.js/src/bridgeit.js"></script>
+     <!-- bridgeit.js STABLE VERSION
+     <script src="http://api.bridgeit.mobi/bridgeit/bridgeit.js"></script -->
+
+     <script src="javascript/bridgeit-demos.js"></script>
+</head>
+
+<body>
+    <div data-role="page" id="home">
+
+        <div data-role="header" data-id="header">
+       	    <h1>Accident Report</h1>
+       	</div>
+
+        <div data-role="content">
+            <div data-role="collapsible-set">
+<!-- Contact List -->
+            <div data-role="collapsible">
+                <h3>Drivers</h3>
+                <div>
+                    <strong>Driver 1</strong>
+                    <div id="cntct1FrmDiv">
+                        <form id="cntct1Form">
+                           <input id="cntct1Name" name="cntct1Name" type="text" placeholder="Name:" maxlength="70" onchange="contacts.cntct1Name = this.value; saveContactsLocally();"/>
+                           <input id="cntct1Email" name="cntct1Email" type="email" placeholder="Email:" maxlength="200" onchange="contacts.cntct1Email = this.value; saveContactsLocally();"/>
+                           <input id="cntct1Phone" name="cntct1Phone" type="tel" placeholder="Phone:" maxlength="15" onchange="contacts.cntct1Phone = this.value; saveContactsLocally();"/>
+                        </form>
+                        <a id="cntct1Btn"
+                           type="button"
+                           onclick="bridgeit.fetchContact('cntct1Btn','onAfterReturnFromContacts1');">Fetch From Contacts</a>
+                    </div>
+                    <strong>Driver 2</strong>
+                    <div id="cntct2FrmDiv">
+                        <form id="cntct2Form">
+                           <input id="cntct2Name" name="cntct2Name" type="text" placeholder="Name:" maxlength="70" onchange="contacts.cntct2Name = this.value; saveContactsLocally();"/>
+                           <input id="cntct2Email" name="cntct2Email" type="email" placeholder="Email:" maxlength="200" onchange="contacts.cntct2Email = this.value; saveContactsLocally();"/>
+                           <input id="cntct2Phone" name="cntct2Phone" type="tel" placeholder="Phone:"  maxlength="15" onchange="contacts.cntct2Phone = this.value; saveContactsLocally();"/>
+                        </form>
+                        <a id="cntct2Btn"
+                           type="button"
+                           onclick="bridgeit.fetchContact('cntct2Btn','onAfterReturnFromContacts2');">Fetch From Contacts</a>
+                    </div>
+                    <script>
+                        console.log('contacts: ' + JSON.stringify(contacts));
+                        if( contacts ){
+                            $('#cntct1Name').val(contacts.cntct1Name);
+                            $('#cntct1Email').val(contacts.cntct1Email);
+                            $('#cntct1Phone').val(contacts.cntct1Phone);
+                            $('#cntct2Name').val(contacts.cntct2Name);
+                            $('#cntct2Email').val(contacts.cntct2Email);
+                            $('#cntct2Phone').val(contacts.cntct2Phone);
+                        }
+                    </script>
+                </div>
+            </div>
+<!-- Scan -->
+            <div data-role="collapsible">
+                <h3>Vehicle Descriptions</h3>
+                <div>
+                    <strong>Vehicle 1</strong>
+                    <div id="scn1FrmDiv">
+                        <form id="scn1Form">
+                            <input id="scn1Vin" name="scn1Vin" type="text" placeholder="VIN:" maxlength="17" onchange="vehicles.scn1Vin = this.value; saveVehiclesLocally();"/>
+                            <input id="scn1Make" name="scn1Make" type="text" placeholder="Make:" maxlength="100" onchange="vehicles.scn1Make = this.value; saveVehiclesLocally();"/>
+                            <input id="scn1Model" name="scn1Model" type="text" placeholder="Model:" maxlength="100" onchange="vehicles.scn1Model = this.value; saveVehiclesLocally();"/>
+                            <input id="scn1Year" name="scn1Year" type="number" placeholder="Year:" maxlength="4" onchange="vehicles.scn1Year = this.value; saveVehiclesLocally();"/>
+                        </form>
+                        <a id="scan1Btn"
+                           type="button"
+                           onclick="bridgeit.scan('scan1Btn','onAfterCaptureScan');">Scan Vehicle Code</a>
+                    </div>
+                    <strong>Vehicle 2</strong>
+                    <div id="scn2FrmDiv">
+                        <form id="scn2Form">
+                            <input id="scn2Vin" name="scn2Vin" type="text" placeholder="VIN:" maxlength="17" onchange="vehicles.scn2Vin = this.value; saveVehiclesLocally();"/>
+                            <input id="scn2Make" name="scn2Make" type="text" placeholder="Make:" maxlength="100" onchange="vehicles.scn2Make = this.value; saveVehiclesLocally();"/>
+                            <input id="scn2Model" name="scn2Model" type="text" placeholder="Model:" maxlength="100" onchange="vehicles.scn2Model = this.value; saveVehiclesLocally();"/>
+                            <input id="scn2Year" name="scn2Year" type="number" placeholder="Year:" maxlength="4" onchange="vehicles.scn2Year = this.value; saveVehiclesLocally();"/>
+                        </form>
+                        <a id="scan2Btn"
+                           type="button"
+                           onclick="bridgeit.scan('scan2Btn','onAfterCaptureScan');">Scan Vehicle Code</a>
+                    </div>
+
+                    <script>
+                        console.log('vehicles: ' + JSON.stringify(vehicles));
+                        if( vehicles ){
+                            $('#scn1Vin').val(vehicles.scn1Vin);
+                            $('#scn1Make').val(vehicles.scn1Make);
+                            $('#scn1Model').val(vehicles.scn1Model);
+                            $('#scn1Year').val(vehicles.scn1Year);
+                            $('#scn2Vin').val(vehicles.scn2Vin);
+                            $('#scn2Make').val(vehicles.scn2Make);
+                            $('#scn2Model').val(vehicles.scn2Model);
+                            $('#scn2Year').val(vehicles.scn2Year);
+                        }
+                    </script>
+                </div>
+            </div>
+<!-- GeoLocation -->
+            <div id="geotrackColl" data-role="collapsible">
+                <h3>Location</h3>
+                <div>
+                    <a id="lctnBtn"
+                       type="button"
+                       onclick="$('#mapCanvas').show(); identifyLocation();">Identify Current Location</a>
+
+                    <div id="mapCanvas" style="height:200px; display:none;"></div>
+
+                    <script>
+                        console.log('location: ' + JSON.stringify(mapLocation));
+                        if(mapLocation.latitude && mapLocation.longitude){
+                            $(document).on( "expand", "#geotrackColl", loadMap);
+                        }
+
+                        function loadMap( event, ui ){
+                            placeLocationOnMap();
+                            $('#mapCanvas').show();
+                        }
+                    </script>
+                </div>
+            </div>
+<!-- Camera -->
+            <div data-role="collapsible">
+                <h3>Pictures</h3>
+                <div>
+                    <a id="cameraBtn"
+                       type="button"
+                       onclick="bridgeit.camera('cameraBtn','onAfterPhotoCapture', {postURL:window.echoHub + 'blob'});">Take Photos of Accident</a>
+
+                    <fieldset id="images"></fieldset>
+
+                    <script>
+                        console.log('photos: ' + JSON.stringify(photos));
+                        if( photos ){
+                            var photosElem = document.getElementById("images");
+                            for( var i = 0 ; i < photos.length ; i++ ){
+                                var row = document.createElement('div');
+                                row.setAttribute('class','row');
+                                photosElem.appendChild(row);
+                                var img = document.createElement('img');
+                                img.setAttribute('src',  photos[i]);
+                                row.appendChild(img);
+                            }
+                        }
+                    </script>
+                </div>
+            </div>
+<!-- Microphone -->
+            <div data-role="collapsible">
+                <h3>Accident Description(s)</h3>
+                <div>
+                    <form id="dscrForm">
+                        <textarea name="dscr" id="dscr" maxlength="1000" placeholder="Description:" onchange="textDescription.description = this.value; saveTextDescriptionLocally();"></textarea>
+                    </form>
+
+                    <fieldset id="recordings"></fieldset>
+
+                    <a id="micBtn"
+                       type="button"
+                       onclick="bridgeit.microphone('micBtn','onAfterAudioCapture', {postURL: window.echoHub + 'blob'});">Record Audio Descriptions</a>
+
+                    <script>
+                        console.log('text description: ' + JSON.stringify(textDescription));
+                        console.log('recordings: ' + JSON.stringify(recordings));
+                        if( textDescription ){
+                            $('#dscr').val(textDescription.description);
+                        }
+                        if( recordings ){
+                            var recordingsElem = document.getElementById("recordings");
+                            for( var i = 0 ; i < recordings.length ; i++ ){
+                                var row = document.createElement('div');
+                                row.setAttribute('class','row');
+                                recordingsElem.appendChild(row);
+                                var audioElem = document.createElement('audio');
+                                audioElem.setAttribute('src', recordings[i]);
+                                audioElem.setAttribute('controls', 'controls');
+                                audioElem.setAttribute('preload', 'auto');
+                                audioElem.setAttribute('type', 'audio/mp3');
+                                row.appendChild(audioElem);
+                            }
+                        }
+                    </script>
+
+                </div>
+              </div>
+            </div>
+<!-- View Report -->
+            <a data-role="button" target="_blank" onclick="launchReport();">View Report</a>
+<!-- Submit Page Dialog -->
+            <a href="#submitpagedialog" data-role="button" data-rel="dialog">Submit Accident Report</a>
+<!-- Rest Form by clearing Forms and Local Storage -->
+            <a data-role="button" onclick="resetPage();">Reset</a>
+        </div>
+
+        <div data-role="footer" data-id="footer" >
+       	    <a href="#" class="icesoft-link" data-role="none">
+       	        <img src="images/icesoft-logo-bw-2x.png"/>
+       	    </a>
+       		<div class="copyright">&copy;&nbsp;2002-2013 ICEsoft Technologies Inc. All rights reserved.</div>
+       	</div>
+
+        <script>
+            setMinContentHeight();
+            $(window).on('orientationchange', setMinContentHeight);
+            $(window).on('resize', setMinContentHeight);
+        </script>
+    </div>
+
+    <div data-role="page" id="submitpagedialog">
+        <div data-role="header">
+            <h1>Submit Report</h1>
+        </div>
+
+        <div data-role="content">
+            <form id="submitForm">
+                <input id="name" name="name" type="text" placeholder="Name:" maxlength="70"/>
+                <input id="smsnumber" type="tel" placeholder="Enter a phone number" maxlength="15"/>
+                <button type="button" class="submit">SMS Report Link</button>
+            </form>
+            <script type="text/javascript">
+                var messageGiven = false;
+
+                $( '#submitForm .submit' ).click(function( event ) {
+                    event.preventDefault();
+                    var submitForm = $('#submitForm');
+                    if( validate(submitForm[0])){
+                        postData(smsAlways);
+                    }
+                });
+          </script>
+      </div>
+    </div>
+
+</body>
+</html>
