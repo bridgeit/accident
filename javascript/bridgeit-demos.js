@@ -92,23 +92,23 @@ function onAfterCaptureScan(event)  {
         $('#scn1Vin').val(event.value);
         vehicles.scn1Vin = event.value;
         <!-- Hard coded so you can scan any bar code.  This simulates looking up VIN details via a service -->
-        $('#scn1Make').val('Toyota');
-        vehicles.scn1Make = 'Toyota';
-        $('#scn1Model').val('corrolla');
-        vehicles.scn1Model = 'corrolla';
-        $('#scn1Year').val('1986');
-        vehicles.scn1Year = '1986';
+        $('#scn1Make').val('Lamborghini');
+        vehicles.scn1Make = 'Lamborghini';
+        $('#scn1Model').val('Gallardo');
+        vehicles.scn1Model = 'Gallardo';
+        $('#scn1Year').val('2009');
+        vehicles.scn1Year = '2009';
     }else if(event.name === 'scan2Btn'){
         $('#scn2Form')[0].reset();
         $('#scn2Vin').val(event.value);
         vehicles.scn2Vin = event.value;
         <!-- Hard coded so you can scan any bar code.  This simulates looking up VIN details via a service -->
-        $('#scn2Make').val('Nissan');
-        vehicles.scn2Make = 'Nissan';
-        $('#scn2Model').val('cube');
-        vehicles.scn2Model = 'cube';
-        $('#scn2Year').val('2009');
-        vehicles.scn2Year = '2009';
+        $('#scn2Make').val('Mazda');
+        vehicles.scn2Make = 'Mazda';
+        $('#scn2Model').val('RX-8');
+        vehicles.scn2Model = 'RX-8';
+        $('#scn2Year').val('2007');
+        vehicles.scn2Year = '2007';
     }
     saveVehiclesLocally();
 }
