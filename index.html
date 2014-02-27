@@ -232,28 +232,11 @@
         <div data-role="content">
             <form id="submitForm">
                 <input id="name" name="name" type="text" placeholder="Name:" maxlength="70"/>
-<!-- email buttons
-                <input id="email" name="email" type="email" placeholder="Email:" maxlength="200"/>
-                <button type="button" class="submit">Send Email</button>
--->
                 <input id="smsnumber" type="tel" placeholder="Enter a phone number" maxlength="15"/>
                 <button type="button" class="submit">SMS Report Link</button>
             </form>
             <script type="text/javascript">
                 var messageGiven = false;
-/* email
-                $( '#submitForm .submit' ).click(function( event ) {
-                    event.preventDefault();
-                    var submitForm = $('#submitForm');
-                    if( validate(submitForm[0])){
-                        var destUrl = 'http://' + location.host + '/accident/email';
-                        req = $.post( destUrl, submitForm.serialize() + setParams());
-                        console.log(req);
-                        req.always(emailAlways);
-                    }
-                    setTimeout(function(){ messageGiven = false; }, 5000);
-                });
-*/
                 $( '#submitForm .submit' ).click(function( event ) {
                     event.preventDefault();
                     var submitForm = $('#submitForm');
