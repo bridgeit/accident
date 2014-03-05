@@ -309,9 +309,7 @@ function postData(always){
     var d = new Date();
     reportId = mapLocation.latitude + '' + mapLocation.longitude + '' +  d.getFullYear() + '' + d.getMonth() + '' + d.getDate() + '' + d.getHours() + '' + d.getMinutes() + '' + d.getMilliseconds();
     reportId = reportId.replace(/\./g,"-");
-    alert(reportId);
     var reportUrl = 'http://api.bridgeit.mobi/echo/list/' + encodeURIComponent(reportId);
-    alert(reportUrl);
     var jsonData = {"contacts" : contacts,
                     "vehicles" : vehicles,
                     "mapLocation" : mapLocation,
