@@ -180,8 +180,6 @@
 </div>
     <script>
         var req;
-        var test = 'http://api.bridgeit.mobi/echo/list/' + getParameterByName('reportId');
-        alert(test);
         req = $.getJSON('http://api.bridgeit.mobi/echo/list/' + getParameterByName('reportId'), function(data){
             console.log('report data: ' + JSON.stringify(data));
             var cntct1ClassDiv = document.getElementById("cntct1Class");
